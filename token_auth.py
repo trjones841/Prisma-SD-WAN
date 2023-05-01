@@ -17,13 +17,13 @@ import secrets
 # Variables
 #***********************************************************************************************************************
 url = "https://api.hood.cloudgenix.com"
-token = secrets.hood_auth_token4
+token = secrets.hood_auth_token5
 
-site_id = '16401369439180122' # Terry's Lab
-#site_id = '16407461458420099' #Branch02
-#site_id = '16413196971540035' #Branch01
-#site_id = '16411652632420028' #Azure-SouthCentral-DC
-#site_id = '16412530301000165' #US Central
+site_id = '16401369439180122'  # Terry's Lab
+#site_id = '16407461458420099'  #Branch02
+#site_id = '16413196971540035'  #Branch01
+#site_id = '16411652632420028'  #Azure-SouthCentral-DC
+#site_id = '16412530301000165'  #US Central
 
 element_id = '16400363208000224'
 interface_id = '16400366754900050'
@@ -55,6 +55,8 @@ if __name__ == "__main__":
   get_interface_N = 1
   get_interface_status = 0
   set_interface_down = 0
+  get_topAppsBW = 0
+  get_topInitFailures = 0
 
   # Get Profile
   profile_api = '/v2.0/api/profile'
@@ -93,7 +95,7 @@ if __name__ == "__main__":
       if response.status_code == 200:
         print('elements_api:\n', json.dumps(response.json(), indent=4))
       elif response.status_code == 403:
-        print('elements_api: Request Failed with authorization failire: ' + str(response.status_code))
+        print('elements_api: Request Failed with authorization failure: ' + str(response.status_code))
       else:
         print('elements_api: Request Failed with status code: ' + str(response.status_code))
         print('elements_api: Request URL: ' + elements_api)
@@ -283,7 +285,7 @@ if __name__ == "__main__":
   #Set Interface Down
   payload = json.dumps({
     "id": "16400366754900050",
-    "_etag": 20,
+    "_etag": 21,
     "_schema": 4,
     "type": "port",
     "attached_lan_networks": null,
@@ -307,7 +309,7 @@ if __name__ == "__main__":
         "full_duplex": false,
         "speed": 0
     },
-    "admin_up": true,
+    "admin_up": false,
     "nat_address": null,
     "nat_port": 0,
     "nat_address_v6": null,
@@ -351,7 +353,7 @@ if __name__ == "__main__":
 
 
   # Get Health
-  if run_all == 1 | get_health == 1:
+  if run_all | get_health :
     site_id = str(16401369439180122)
     payload = json.dumps({"type": "basenet","nodes": [site_id]})
     health_api = '/v3.3/api/tenants/'+ tenantID +'/topology'
@@ -360,5 +362,64 @@ if __name__ == "__main__":
       print('health_api: \n',json.dumps(response.json(), indent=4))
     else:
       print('health_api: Request failed with the status code: ' + str(response.status_code))
+      print('health_api: url: ' + health_api)
   else:
     print('Skipped Get Health')
+
+    # Get Top Applications by Bandwidth
+    payload = json.dumps({
+      "topn_basis": "traffic_volume",
+      "top_n": {
+        "type": "app",
+        "limit": 10
+      },
+      "filter": {
+        "site": [
+          "[16401369439180122]"
+        ]
+      },
+      "start_time": "2022-06-23T00:00:00.380Z",
+      "end_time": "2022-06-23T12:00:00.380Z"
+    })
+
+    # Get Top Applications by Bandwidth
+    if run_all | get_topAppsBW :
+      site_id = str(16401369439180122)
+      payload = json.dumps({"type": "basenet", "nodes": [site_id]})
+      topAppsBW_api = '/v3.3/api/tenants/' + tenantID + '/topology'
+      response = requests.request("POST", url + topAppsBW_api, headers=headers, data=payload)
+      if response.status_code == 200:
+        print('topAppsBW_api: \n', json.dumps(response.json(), indent=4))
+      else:
+        print('topAppsBW_api: Request failed with the status code: ' + str(response.status_code))
+        print('topAppsBW_api: url: ' + topAppsBW_api)
+    else:
+      print('Skipped Get Tops Apps by Bandwidth')
+
+    # Get Top Initialization Failures
+    payload = json.dumps({
+      "topn_basis": "initiation_failure",
+      "top_n": {
+        "type": "app",
+        "limit": 10
+      },
+      "filter": {
+        "site": [
+          "[16401369439180122]"
+        ]
+      },
+      "start_time": "2022-06-23T00:00:00.380Z",
+      "end_time": "2022-06-23T12:00:00.380Z"
+    })
+    if run_all | get_topInitFailures :
+      site_id = str(16401369439180122)
+      payload = json.dumps({"type": "basenet", "nodes": [site_id]})
+      topInitFailures_api = '/v3.3/api/tenants/' + tenantID + '/topology'
+      response = requests.request("POST", url + topInitFailures_api, headers=headers, data=payload)
+      if response.status_code == 200:
+        print('topInitFailures_api: \n', json.dumps(response.json(), indent=4))
+      else:
+        print('topInitFailures_api: Request failed with the status code: ' + str(response.status_code))
+        print('topInitFailures_api: url: ' + topInitFailures_api)
+    else:
+      print('Skipped Get Top Initization Failures')
