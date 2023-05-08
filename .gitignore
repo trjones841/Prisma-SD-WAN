@@ -1,2 +1,4 @@
 secrets.py
 pyvenv.cfg
+token_auth.py
+credentials_auth.py
