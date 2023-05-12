@@ -5,3 +5,5 @@ credentials_auth.py
 cloudgenix.py
 cgx_sdk.py
 scratch.py
+site_info_payload.py
+site_level.py
