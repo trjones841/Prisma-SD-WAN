@@ -18,8 +18,7 @@ __version__ = '0.1'
 import requests
 import json
 import sdwan_auth
-from secrets import jeg_auth_token
-# from secrets import jeg_tenant_id as tenant_id
+from secrets import auth_token
 
 
 def set_profile(token):

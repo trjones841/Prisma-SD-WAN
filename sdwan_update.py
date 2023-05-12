@@ -10,7 +10,7 @@ __version__ = '0.1'
 import requests
 import json
 import sdwan_auth
-from secrets import jeg_auth_token
+from secrets import auth_token
 from site_info_payload import site_level_data
 from site_info_payload import lannetworks_data
 
@@ -57,7 +57,6 @@ if __name__ == '__main__':
 
     site = '1682708421285002296'
 
-    # Example using data from CH2M-USGNV2 (Gainsville, FL)
     siteleveldata = 0
     if siteleveldata == 1:
         print(put_site_data(site, site_level_data, bearer_token))

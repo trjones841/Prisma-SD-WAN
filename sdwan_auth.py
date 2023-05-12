@@ -23,7 +23,7 @@ import requests
 from secrets import tenant_id
 from secrets import auth_endpoint as url
 from secrets import svc_acct
-from secrets import jeg_client_creds as client_secret
+from secrets import client_secret
 
 
 def bearer_token():
