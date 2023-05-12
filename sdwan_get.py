@@ -10,7 +10,8 @@ curl -o --location "https://api.sase.paloaltonetworks.com/config/v1/jobs" \
 -H "Content-Type: application/json"
 
 '''
-__author__ = 'Jacobs Engineering'
+author = 'Terry Jones'
+__author__ = '%s' % author
 __date__ = '29APR2023'
 __version__ = '0.1'
 
@@ -92,7 +93,7 @@ def get_site_lannetworks(site_id, token):
 
 
 if __name__ == '__main__':
-    bearer_token = jacobs_sdwan_auth.bearer_token()
+    bearer_token = sdwan_auth.bearer_token()
     # set_profile required for all API once the bearer token request is made.
     print('tenant_id: ', json.dumps(set_profile(bearer_token).json()['tenant_id'], indent=4))
 

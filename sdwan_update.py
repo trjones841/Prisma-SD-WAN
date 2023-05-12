@@ -2,7 +2,8 @@
 
 
 '''
-__author__ = 'Jacobs Engineering'
+author = 'Terry Jones'
+__author__ = '%s' % author
 __date__ = '29APR2023'
 __version__ = '0.1'
 
@@ -51,7 +52,7 @@ def put_site_lannetworks(site_id, lannetwork_id, lan_data, token):
 
 if __name__ == '__main__':
     null = None
-    bearer_token = jacobs_sdwan_auth.bearer_token()
+    bearer_token = sdwan_auth.bearer_token()
     print('tenant_id: ', json.dumps(set_profile(bearer_token).json()['tenant_id'], indent=4))
 
     site = '1682708421285002296'
