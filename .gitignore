@@ -2,3 +2,6 @@ secrets.py
 pyvenv.cfg
 token_auth.py
 credentials_auth.py
+cloudgenix.py
+cgx_sdk.py
+scratch.py
